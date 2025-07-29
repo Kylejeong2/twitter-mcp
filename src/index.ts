@@ -84,13 +84,11 @@ export default function createStatelessServer({
         // Wait for compose area and type the tweet
         await page.act(`type "${text}" in the tweet compose area`);
         
-        // Wait a moment for the text to be processed
-        await page.waitForTimeout(5000);
-        
         // Post the tweet
         await page.act("click the post button to publish the tweet");
         
-        await page.waitForTimeout(10000);
+        // Brief wait to ensure the request is sent
+        await page.waitForTimeout(2000);
         await stagehand.close();
 
         return {
