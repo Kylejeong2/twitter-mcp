@@ -6,9 +6,9 @@ import { z } from "zod";
 // Optional: Define configuration schema to require configuration at connection time
 export const configSchema = z.object({
   debug: z.boolean().default(false).describe("Enable debug logging"),
-  browserbaseApiKey: z.string().optional().describe("Browserbase API key (falls back to env BROWSERBASE_API_KEY)"),
-  browserbaseProjectId: z.string().optional().describe("Browserbase project ID (falls back to env BROWSERBASE_PROJECT_ID)"),
-  openaiApiKey: z.string().optional().describe("OpenAI API key for AI actions (falls back to env OPENAI_API_KEY)"),
+  browserbaseApiKey: z.string().describe("Browserbase API key (falls back to env BROWSERBASE_API_KEY)"),
+  browserbaseProjectId: z.string().describe("Browserbase project ID (falls back to env BROWSERBASE_PROJECT_ID)"),
+  openaiApiKey: z.string().describe("OpenAI API key for AI actions (falls back to env OPENAI_API_KEY)"),
   contextId: z.string().optional().describe("Browserbase context ID for persistent sessions to maintain login state (falls back to env BROWSERBASE_CONTEXT_ID)"),
 });
 
@@ -17,14 +17,15 @@ export default function createStatelessServer({
 }: {
   config: z.infer<typeof configSchema>;
 }) {
-  // Merge config with environment variables so users don't have to pass them every time
-  const resolvedConfig = {
-    debug: config.debug,
-    browserbaseApiKey: config.browserbaseApiKey ?? process.env.BROWSERBASE_API_KEY ?? "",
-    browserbaseProjectId: config.browserbaseProjectId ?? process.env.BROWSERBASE_PROJECT_ID ?? "",
-    openaiApiKey: config.openaiApiKey ?? process.env.OPENAI_API_KEY,
-    contextId: config.contextId ?? process.env.BROWSERBASE_CONTEXT_ID,
-  } as z.infer<typeof configSchema>;
+  // Merge config with environment variables for testing 
+  // const resolvedConfig = {
+  //   debug: config.debug,
+  //   browserbaseApiKey: config.browserbaseApiKey ?? process.env.BROWSERBASE_API_KEY ?? "",
+  //   browserbaseProjectId: config.browserbaseProjectId ?? process.env.BROWSERBASE_PROJECT_ID ?? "",
+  //   openaiApiKey: config.openaiApiKey ?? process.env.OPENAI_API_KEY,
+  //   contextId: config.contextId ?? process.env.BROWSERBASE_CONTEXT_ID,
+  // } as z.infer<typeof configSchema>;
+  const resolvedConfig = config;
  
   const server = new McpServer({
     name: "Twitter MCP",
