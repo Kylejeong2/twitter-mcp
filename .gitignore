@@ -1,0 +1,10 @@
+
+# nvim-claude
+.claude/settings.local.json
+.nvim-claude/
+
+/node_modules
+.env
+
+.env/*
+.smithery/*
